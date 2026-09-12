@@ -68,11 +68,16 @@ class YOLODetector:
         self.conf_threshold = conf_threshold
         self.iou_threshold = iou_threshold
         self.device = device
+        self._model = None
 
-        # Load the official pretrained YOLO model
-        print(f"[YOLODetector] Loading pretrained model '{self.model_name}'...")
-        self.model = YOLO(self.model_name)
-        print(f"[YOLODetector] Model loaded successfully.")
+    @property
+    def model(self) -> YOLO:
+        """Lazy-load the official pretrained YOLO model on demand."""
+        if self._model is None:
+            print(f"[YOLODetector] Lazy-loading pretrained model '{self.model_name}'...")
+            self._model = YOLO(self.model_name)
+            print(f"[YOLODetector] Model loaded successfully.")
+        return self._model
 
     def get_category(self, class_name: str) -> Optional[str]:
         """

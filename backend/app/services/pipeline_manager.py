@@ -122,7 +122,7 @@ class SurveillancePipelineManager:
 
     def __init__(self):
         self.scenario_manager = ScenarioManager()
-        self.detector = YOLODetector(model_name="yolov8n.pt", conf_threshold=0.35)
+        self._detector: Optional[YOLODetector] = None
         self.tracker = ByteTracker()
         self.analyzer = MovementAnalyzer()
         self.zone = RestrictedZone(zone_name="BORDER_SECTOR_ALPHA")
@@ -131,9 +131,20 @@ class SurveillancePipelineManager:
         self.current_frame_number = 0
         self.active_targets: List[Dict[str, Any]] = []
         self.alerts_history: List[Dict[str, Any]] = []
+        self.is_primed: bool = False
 
-        # Process initial frame batch to prime state
-        self.reset_pipeline()
+    @property
+    def detector(self) -> YOLODetector:
+        """Lazy-instantiate detector on demand."""
+        if self._detector is None:
+            self._detector = YOLODetector(model_name="yolov8n.pt", conf_threshold=0.35)
+        return self._detector
+
+    def ensure_primed(self):
+        """Lazy-prime pipeline telemetry on demand without blocking server startup."""
+        if not self.is_primed:
+            self._prime_pipeline_from_active_video()
+            self.is_primed = True
 
     def reset_pipeline(self):
         """Reset internal pipeline tracker state when switching scenarios or restarting."""
@@ -144,7 +155,7 @@ class SurveillancePipelineManager:
         self.current_frame_number = 0
         self.active_targets.clear()
         self.alerts_history.clear()
-        self._prime_pipeline_from_active_video()
+        self.is_primed = False
 
     def _prime_pipeline_from_active_video(self, max_frames: int = 15):
         """Read initial frames of the active video file to populate targets & telemetry."""
@@ -206,6 +217,7 @@ class SurveillancePipelineManager:
 
     def get_telemetry(self) -> Dict[str, Any]:
         """Return real-time telemetry summary for frontend dashboard."""
+        self.ensure_primed()
         humans = sum(1 for t in self.active_targets if t.get("category") == CATEGORY_HUMAN)
         animals = sum(1 for t in self.active_targets if t.get("category") == CATEGORY_ANIMAL)
         vehicles = sum(1 for t in self.active_targets if t.get("category") == CATEGORY_VEHICLE)
@@ -245,10 +257,12 @@ class SurveillancePipelineManager:
 
     def get_targets(self) -> List[Dict[str, Any]]:
         """Return active tracked targets list."""
+        self.ensure_primed()
         return self.active_targets
 
     def get_alerts(self) -> List[Dict[str, Any]]:
         """Return generated alert records."""
+        self.ensure_primed()
         return self.alerts_history
 
 
