@@ -1,0 +1,22 @@
+# Virtual Environments & Build Outputs
+venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+
+# Uploads
+data/uploads/*
+backend/data/uploads/*
+
+# Explicitly allow required demo video and json assets for Render deployment
+!data/processed/patrol1_final.mp4
+!data/processed/patrol1_final.json
+!backend/data/processed/patrol1_final.mp4
+!backend/data/processed/patrol1_final.json
+!backend/videos/sample.mp4
+
+# Node / Frontend
+node_modules/
+dist/
+.next/

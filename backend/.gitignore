@@ -13,6 +13,13 @@ venv/
 data/uploads/*
 !data/uploads/.gitkeep
 
+# Explicitly allow demo video & json telemetry files for Render
+!data/processed/patrol1_final.mp4
+!data/processed/patrol1_final.json
+!backend/data/processed/patrol1_final.mp4
+!backend/data/processed/patrol1_final.json
+!backend/videos/sample.mp4
+
 # Testing & Coverage
 .pytest_cache/
 .coverage

@@ -81,8 +81,9 @@ class ScenarioSelectRequest(BaseModel):
 @app.get("/", summary="Root Welcome Endpoint")
 def root():
     return {
-        "service": "AI Border Sentinel API",
         "status": "online",
+        "message": "AI Border Sentinel API running",
+        "service": "AI Border Sentinel API",
         "docs": "/docs",
         "active_scenario": pipeline_manager.scenario_manager.active_scenario_id,
         "endpoints": {
