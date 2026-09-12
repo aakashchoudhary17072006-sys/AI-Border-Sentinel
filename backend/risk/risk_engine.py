@@ -176,14 +176,11 @@ class RiskEngine:
             score += self.config.weight_group_movement
             reasons.append("Multiple tracked humans moving together")
 
-        # Category Nuance: Animals are natural wildlife; cap wildlife risk
+        # Category Nuance: Animals are natural wildlife; cap wildlife risk (ANIMAL_ACTIVITY / NUISANCE_ALERT)
         if category == CATEGORY_ANIMAL:
-            # Animal in restricted zone is an intrusion, but not malicious intent
-            score = min(score, 35)
-            if zone_status == ZONE_INSIDE:
-                reasons = ["Wildlife entry into perimeter"]
-            elif zone_status == ZONE_NEAR:
-                reasons = ["Wildlife approaching perimeter"]
+            # Animal in restricted zone is non-malicious wildlife activity
+            score = min(score, 24)
+            reasons = ["Wildlife detected - No threat indicator"]
 
         # Clamp score to [0, 100]
         final_score = max(0, min(100, score))

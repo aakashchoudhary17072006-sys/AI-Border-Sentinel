@@ -1,4 +1,4 @@
-# Backend API Framework (from Step 1)
+# Backend API Framework
 fastapi>=0.115.0
 uvicorn[standard]>=0.30.0
 python-multipart>=0.0.12
@@ -6,10 +6,12 @@ pydantic>=2.9.0
 pydantic-settings>=2.5.0
 pytest>=8.3.0
 httpx>=0.27.0
+numpy>=1.24.0
 
-# Computer Vision & Object Detection (Step 2)
-opencv-python>=4.10.0.84
+# Computer Vision & Object Detection
+opencv-python-headless>=4.10.0.84
 ultralytics>=8.3.0
 
-# Multi-Object Tracking (Step 3)
+# Multi-Object Tracking
 lap>=0.5.12
+
