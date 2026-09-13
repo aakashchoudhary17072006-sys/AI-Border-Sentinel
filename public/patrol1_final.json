@@ -1,0 +1,175 @@
+{
+  "metadata": {
+    "project": "AI Border Sentinel",
+    "sequence": "patrol1_final",
+    "total_input_frames": 690,
+    "processed_frames": 690,
+    "unreadable_frames": 0,
+    "output_fps": 15.0,
+    "resolution": {
+      "width": 320,
+      "height": 240
+    },
+    "restricted_zone": {
+      "label": "RESTRICTED ZONE ALPHA",
+      "polygon": [
+        [140, 75],
+        [250, 75],
+        [250, 160],
+        [140, 160]
+      ]
+    },
+    "risk_model": {
+      "type": "Explainable Heuristic",
+      "score_range": [0, 100],
+      "risk_tiers": {
+        "NORMAL": "0-30",
+        "MONITOR": "31-60",
+        "SUSPICIOUS": "61-80",
+        "HIGH RISK": "81-100"
+      }
+    },
+    "disclaimer": "AI Border Sentinel provides explainable risk indicators for human verification."
+  },
+  "summary": {
+    "total_unique_targets": 6,
+    "total_zone_entry_events": 63,
+    "total_alerts": 18,
+    "highest_risk_score": 90,
+    "highest_risk_level": "HIGH RISK",
+    "approximate_processing_fps": 21.4
+  },
+  "targets": [
+    {
+      "target_id": 1,
+      "bbox": [150, 80, 190, 140],
+      "center": [170, 110],
+      "confidence": 0.94,
+      "direction": "SOUTH_EAST",
+      "zone_state": "INSIDE",
+      "risk": {
+        "score": 90,
+        "level": "HIGH RISK",
+        "factors": [
+          { "name": "Restricted Zone Intrusion", "points": 40, "reason": "Target inside polygon" },
+          { "name": "Suspicious Trajectory", "points": 30, "reason": "Direction towards critical boundary" },
+          { "name": "Linger Duration > 15s", "points": 20, "reason": "Extended presence in restricted zone" }
+        ]
+      }
+    },
+    {
+      "target_id": 2,
+      "bbox": [160, 90, 200, 150],
+      "center": [180, 120],
+      "confidence": 0.91,
+      "direction": "EAST",
+      "zone_state": "INSIDE",
+      "risk": {
+        "score": 75,
+        "level": "SUSPICIOUS",
+        "factors": [
+          { "name": "Restricted Zone Intrusion", "points": 40, "reason": "Target inside polygon" },
+          { "name": "Approach Direction Towards Fence", "points": 35, "reason": "Vector heading east" }
+        ]
+      }
+    },
+    {
+      "target_id": 3,
+      "bbox": [100, 50, 130, 100],
+      "center": [115, 75],
+      "confidence": 0.88,
+      "direction": "NORTH",
+      "zone_state": "OUTSIDE",
+      "risk": {
+        "score": 45,
+        "level": "MONITOR",
+        "factors": [
+          { "name": "Proximity to Border Polygon", "points": 25, "reason": "Within 25m buffer" },
+          { "name": "Slow Velocity", "points": 20, "reason": "Movement speed < 1.2 m/s" }
+        ]
+      }
+    },
+    {
+      "target_id": 4,
+      "bbox": [80, 40, 110, 85],
+      "center": [95, 62],
+      "confidence": 0.92,
+      "direction": "WEST",
+      "zone_state": "OUTSIDE",
+      "risk": {
+        "score": 20,
+        "level": "NORMAL",
+        "factors": [
+          { "name": "Normal Trajectory", "points": 20, "reason": "Parallel border movement" }
+        ]
+      }
+    },
+    {
+      "target_id": 5,
+      "bbox": [210, 100, 245, 155],
+      "center": [227, 127],
+      "confidence": 0.89,
+      "direction": "SOUTH",
+      "zone_state": "INSIDE",
+      "risk": {
+        "score": 85,
+        "level": "HIGH RISK",
+        "factors": [
+          { "name": "Restricted Zone Intrusion", "points": 40, "reason": "Target inside polygon" },
+          { "name": "Loitering in Critical Sector", "points": 45, "reason": "Stationary duration > 20s" }
+        ]
+      }
+    },
+    {
+      "target_id": 6,
+      "bbox": [50, 30, 85, 70],
+      "center": [67, 50],
+      "confidence": 0.95,
+      "direction": "NORTH_WEST",
+      "zone_state": "OUTSIDE",
+      "risk": {
+        "score": 15,
+        "level": "NORMAL",
+        "factors": [
+          { "name": "Normal Perimeter Patrol", "points": 15, "reason": "Outer perimeter trajectory" }
+        ]
+      }
+    }
+  ],
+  "alerts": [
+    {
+      "target_id": 1,
+      "frame_index": 320,
+      "timestamp_seconds": 21.3,
+      "level": "HIGH RISK",
+      "score": 90,
+      "message": "Target #1 entered RESTRICTED ZONE ALPHA (High Risk score: 90)",
+      "reasons": ["Restricted Zone Intrusion", "Linger Duration > 15s"],
+      "human_verification_required": true,
+      "disclaimer": "Requires human operator verification."
+    },
+    {
+      "target_id": 5,
+      "frame_index": 410,
+      "timestamp_seconds": 27.3,
+      "level": "HIGH RISK",
+      "score": 85,
+      "message": "Target #5 loitering inside RESTRICTED ZONE ALPHA (High Risk score: 85)",
+      "reasons": ["Restricted Zone Intrusion", "Loitering in Critical Sector"],
+      "human_verification_required": true,
+      "disclaimer": "Requires human operator verification."
+    },
+    {
+      "target_id": 2,
+      "frame_index": 180,
+      "timestamp_seconds": 12.0,
+      "level": "SUSPICIOUS",
+      "score": 75,
+      "message": "Target #2 approached geofence boundary (Suspicious score: 75)",
+      "reasons": ["Restricted Zone Intrusion", "Approach Direction Towards Fence"],
+      "human_verification_required": true,
+      "disclaimer": "Requires human operator verification."
+    }
+  ],
+  "frames": []
+}
